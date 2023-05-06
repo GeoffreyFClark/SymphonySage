@@ -14,7 +14,7 @@
 
 ## How to run the bot ✅
 1. Make sure you have `Python` + a Python package installer like `Pip`.
-     - Check if you have them by running in your terminal `python --version` and `pip --version` (Pre-installed on Macs).
+     - Check by running in your terminal `python --version` and `pip --version` (Pre-installed on Macs).
 2. Run `git clone https://github.com/GeoffreyFClark/Discord-Music-Bot.git` in your terminal.
      - Be sure to navigate to wherever you want the repository saved. 
      - Alternatively you can download this repository in a .zip by clicking code --> Download ZIP.
@@ -27,5 +27,5 @@
      - You can obtain a discord token from [the discord developer portal.](https://discord.com/developers/applications)<br>
           - Create a Discord App --> Bot sidetab --> configure settings --> click <i>Add Bot</i> --> Copy Discord Token<br>
 5. Add the bot to your server via the discord developer portal.</br>
-    - OAuth2 sidetab --> URL Generator --> Scopes: select bot --> Select bot permissions --> URL to add bot to Discord server.<br>
+    - OAuth2 sidetab --> URL Generator --> Scopes: bot --> Select bot permissions --> URL to add bot to Discord server.<br>
     - Run Script and enjoy!
