@@ -2,18 +2,15 @@
 
 🔥💪 Discord bot that plays free music for your server! 🎷🚀 </b>
 ### Commands:
+- $help [command name]
 - $play [song name]
-     - alias $p
 - $splay [spotify playlist url] 
-     - alias $sp
 - $resume 
 - $skip 
 - $pause 
 - $clear 
 - $help
-- $help [command name]
-- $disconnect 
-     - alias $dc
+- $disconnect
 
 ## How to run the bot ✅
 1. Make sure you have `Python` + a Python package installer like `Pip`.
