@@ -17,64 +17,169 @@ intents = intents.all()
 bot = commands.Bot(command_prefix='$', intents = intents)
 
 @commands.cooldown(1, 1, commands.BucketType.user)
-@bot.command(name='play', aliases=['p'], help='plays the given track provided by the user', description=',p <song name>')
+@bot.command(name='play', aliases=['p'], help='play specified song', description='$p <song name>')
 async def play_command(ctx: commands.Context, *, search:nextwave.YouTubeTrack):
-    # [Implementation of play_command]
+    if not getattr(ctx.author.voice, 'channel', None):
+        return await ctx.send(embed=nextcord.Embed(description='Try after joining voice channel'))
+    elif not ctx.voice_client:
+        vc: nextwave.Player = await ctx.author.voice.channel.connect(cls=nextwave.Player)
+    else:
+        vc: nextwave.Player = ctx.voice_client
+
+    if vc.queue.is_empty and vc.is_playing() is False:   
+        playString = await ctx.send(embed=nextcord.Embed(description='**searching...**'))
+        await vc.play(search)
+        await playString.edit(embed=nextcord.Embed(description=f'**Search found**\n\n`{search.title}`'))
+    else:
+        await vc.queue.put_wait(search)
+        await ctx.send(embed=nextcord.Embed(description=f'Added to the `QUEUE`\n\n`{search.title}`'))
+    vc.ctx = ctx  # [This is required for the on_nextwave_track_end event to work]
 
 @commands.cooldown(1, 1, commands.BucketType.user)
-@bot.command(name='splay', aliases=['sp'], help='plays the provided spotify playlist link', description=',sp <spotify playlist link>')
+@bot.command(name='splay', aliases=['sp'], help='play provided spotify playlist', description='$sp <spotify playlist link>')
 async def spotifyplay_command(ctx: commands.Context, search: str):
-    # [Implementation of spotifyplay_command]
+    if not getattr(ctx.author.voice, 'channel', None):
+        return await ctx.send(embed=nextcord.Embed(description='Try after joining voice channel'))
+    elif not ctx.voice_client:
+        vc: nextwave.Player = await ctx.author.voice.channel.connect(cls=nextwave.Player)
+    else:
+        vc: nextwave.Player = ctx.voice_client
+
+    async for partial in spotify.SpotifyTrack.iterator(query=search, type=spotify.SpotifySearchType.playlist, partial_tracks=True):
+        if vc.queue.is_empty and vc.is_playing() is False:
+            await vc.play(partial)
+        else:
+            await vc.queue.put_wait(partial)
+    vc.ctx = ctx 
 
 @commands.cooldown(1, 2, commands.BucketType.user)
-@bot.command(name='pause', aliases=['stop'], help='pauses the current playing track', description=',pause')
+@bot.command(name='pause', aliases=['stop'], help='pauses current playing song', description='$pause')
 async def pause_command(ctx: commands.Context):
-    # [Implementation of pause_command]
+    if await user_connectivity(ctx) == False:
+        return
+    vc: nextwave.Player = ctx.voice_client
+
+    if vc._source:
+        if not vc.is_paused():
+            await vc.pause()
+            await ctx.send(embed=nextcord.Embed(description='`PAUSED` the music!'))
+        elif vc.is_paused():
+            await ctx.send(embed=nextcord.Embed(description='Already `PAUSED`'))
+    else:
+        await ctx.send(embed=nextcord.Embed(description='Player is not `playing`!'))
 
 @commands.cooldown(1, 2, commands.BucketType.user)
-@bot.command(name='resume',aliases=[], help='resumes the paused track', description=',resume')
+@bot.command(name='resume',aliases=[], help='resumes paused song', description='$resume')
 async def resume_command(ctx: commands.Context):
-    # [Implementation of resume_command]
+    if await user_connectivity(ctx) == False:
+        return
+    vc: nextwave.Player = ctx.voice_client
+
+    if vc.is_playing():
+        if vc.is_paused():
+            await vc.resume()
+            await ctx.send(embed=nextcord.Embed(description='Music `RESUMED`!'))
+        elif vc.is_playing():
+            await ctx.send(embed=nextcord.Embed(description='Already `PLAYING`'))
+    else:
+        await ctx.send(embed=nextcord.Embed(description='Player is not `playing`!'))
 
 @commands.cooldown(1, 2, commands.BucketType.user)
-@bot.command(name='skip', aliases=['next', 's'], help='skips to the next track', description=',s')
+@bot.command(name='skip', aliases=['next', 's'], help='skips to next song', description='$s')
 async def skip_command(ctx: commands.Context):
-    # [Implementation of skip_command]
+    if await user_connectivity(ctx) == False:
+        return
+    vc: nextwave.Player = ctx.voice_client
+    if vc.queue.is_empty:
+        await vc.stop()
+        await vc.resume()
+        return await ctx.send(embed=nextcord.Embed(description='Song stopped! No songs in `QUEUE`'))
+    else:
+        await vc.stop()
+        vc.queue._wakeup_next()
+        await vc.resume()
+        return await ctx.send(embed=nextcord.Embed(description='`SKIPPED`!'))
 
 @commands.cooldown(1, 2, commands.BucketType.user)
-@bot.command(name='clear',aliases=[], help='clears the queue', description=',clear')
+@bot.command(name='clear',aliases=[], help='clears the queue', description='$clear')
 async def clear_command(ctx: commands.Context):
-    # [Implementation of clear_command]
+    vc: nextwave.Player = ctx.voice_client
+    if await user_connectivity(ctx) == False:
+        return
+    if vc.queue.is_empty:
+        return await ctx.send(embed= nextcord.Embed(description='No `SONGS` present'))
+    vc.queue._queue.clear()
+    clear_command_embed = nextcord.Embed(description='`QUEUE` cleared!')
+    return await ctx.send(embed=clear_command_embed)
+
+@commands.cooldown(1, 2, commands.BucketType.user)
+@bot.command(name='disconnect', aliases=['dc', 'leave'], help='disconnects the player from the vc', description='$dc')
+async def disconnect_command(ctx: commands.Context):
+    if await user_connectivity(ctx) == False:
+        return
+    vc : nextwave.Player = ctx.voice_client
+    try:
+        await vc.disconnect(force=True)
+        await ctx.send(embed=nextcord.Embed(description='**BYE!** Have a great time!'))
+    except Exception:
+        await ctx.send(embed=nextcord.Embed(description='Failed to destroy!'))
 
 @bot.group(invoke_without_command=True)
 async def help(ctx, helpstr: Optional[str]):
-    # [Implementation of help command]
+    user_commands = [play_command, spotifyplay_command, pause_command, resume_command, skip_command, clear_command, disconnect_command]
+    if helpstr is not None:
+        for i in user_commands:
+            aliases = ' | '.join(list(i.aliases))
+            if i.name == helpstr:
+                embed = nextcord.Embed(description=f'**aliases**: {aliases}\n\n**function**: `{i.help}`\n\n**use**: {i.description}')
+                await ctx.send(embed=embed)
+    if helpstr is None:
+        commands = ''.join(f'`,{i.name}` ' for i in user_commands)
+        help_description = f'{bot.description}\n**Commands:** {commands}\n\n'
+        embed = nextcord.Embed(title="Help", description=help_description)
+        embed.add_field(name='type $help <command name> for more information about that command')
+        await ctx.send(embed=embed)
 
 @bot.event
 async def on_ready():
-    # [Implementation of on_ready event]
+    print(f'logged in as: {bot.user.name}')
+    bot.loop.create_task(node_connect())
+    await bot.change_presence(activity=nextcord.Activity(type=nextcord.ActivityType.listening, name="$help"))
 
 @bot.event
 async def on_nextwave_node_ready(node: nextwave.Node):
-    # [Implementation of on_nextwave_node_ready event]
+    print(f'Node {node.identifier} connected successfully')
 
 async def node_connect():
-    # [Implementation of node_connect function]
+    await bot.wait_until_ready()
+    await nextwave.NodePool.create_node(bot=bot, host='lavalink.lexnet.cc', port=443, password="lexn3tl@val!nk", https=True, spotify_client=spotify.SpotifyClient(client_id=SPOTIFY_CLIENT_ID,client_secret=SPOTIFY_CLIENT_SECRET))
 
 @bot.event
 async def on_nextwave_track_end(player: nextwave.Player, track: nextwave.Track, reason):
-    # [Implementation of on_nextwave_track_end event]
+    ctx = player.ctx
+    vc: player = ctx.voice_client
+    try:
+        if not vc.queue.is_empty:
+            next_song = vc.queue.get()
+            await vc.play(next_song)
+            await ctx.send(embed=nextcord.Embed(description=f'**Current song playing from the `QUEUE`**\n\n`{next_song.title}`'), delete_after=30)
+    except Exception:
+        await vc.stop()
+        return await ctx.send(embed=nextcord.Embed(description='No songs in the `QUEUE`'))
 
 @bot.event
 async def on_command_error(ctx: commands.Context, error):
-    # [Implementation of on_command_error event]
+    if isinstance(error, commands.CommandOnCooldown):
+        em = nextcord.Embed(description=f'**Cooldown active**\ntry again in `{error.retry_after:.2f}`s*')
+        await ctx.send(embed=em)
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send(embed=nextcord.Embed(description="Missing `arguments`"))
 
 async def user_connectivity(ctx: commands.Context):
-    # [Implementation of user_connectivity function]
-
-
+    if not getattr(ctx.author.voice, 'channel', None):
+        await ctx.send(embed=nextcord.Embed(description='Try after joining a `voice channel`',))
+        return False
 
 
 if __name__ == '__main__':
-    # bot.run(os.environ["tishmish_token"])
     bot.run(DISCORD_TOKEN)
