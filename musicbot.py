@@ -11,10 +11,24 @@ DISCORD_TOKEN = ''
 SPOTIFY_CLIENT_ID = ''
 SPOTIFY_CLIENT_SECRET = ''
 
-intents = nextcord.Intents(messages = True, guilds = True)
-intents = intents.all()
+intents = nextcord.Intents.all()
+bot = commands.Bot(command_prefix='$', intents = intents, description='Premium quality music bot for free! <3')
 
-bot = commands.Bot(command_prefix='$', intents = intents)
+bot.remove_command('help')
+@bot.group(invoke_without_command=True)
+async def help(ctx, helpstr: Optional[str] = None):
+    user_commands = [play_command, spotifyplay_command, pause_command, resume_command, skip_command, clear_command, disconnect_command]
+    if helpstr is not None:
+        for i in user_commands:
+            if i.name == helpstr:
+                aliases = ' | '.join(list(i.aliases))
+                embed = nextcord.Embed(description=f'**aliases**: {aliases}\n\n**function**: `{i.help}`\n\n**use**: {i.description}')
+                await ctx.send(embed=embed)
+    if helpstr is None:
+        commands = ''.join(f'`${i.name}` ' for i in user_commands)
+        help_description = f'{bot.description}\n**Commands:** {commands}\nType $help <command name> for more information about that command'
+        embed = nextcord.Embed(title="Help", description=help_description)
+        await ctx.send(embed=embed)
 
 @commands.cooldown(1, 1, commands.BucketType.user)
 @bot.command(name='play', aliases=['p'], help='play specified song', description='$p <song name>')
@@ -58,7 +72,6 @@ async def pause_command(ctx: commands.Context):
     if await user_connectivity(ctx) == False:
         return
     vc: nextwave.Player = ctx.voice_client
-
     if vc._source:
         if not vc.is_paused():
             await vc.pause()
@@ -124,22 +137,6 @@ async def disconnect_command(ctx: commands.Context):
     except Exception:
         await ctx.send(embed=nextcord.Embed(description='Failed to destroy!'))
 
-@bot.group(invoke_without_command=True)
-async def help(ctx, helpstr: Optional[str]):
-    user_commands = [play_command, spotifyplay_command, pause_command, resume_command, skip_command, clear_command, disconnect_command]
-    if helpstr is not None:
-        for i in user_commands:
-            aliases = ' | '.join(list(i.aliases))
-            if i.name == helpstr:
-                embed = nextcord.Embed(description=f'**aliases**: {aliases}\n\n**function**: `{i.help}`\n\n**use**: {i.description}')
-                await ctx.send(embed=embed)
-    if helpstr is None:
-        commands = ''.join(f'`,{i.name}` ' for i in user_commands)
-        help_description = f'{bot.description}\n**Commands:** {commands}\n\n'
-        embed = nextcord.Embed(title="Help", description=help_description)
-        embed.add_field(name='type $help <command name> for more information about that command')
-        await ctx.send(embed=embed)
-
 @bot.event
 async def on_ready():
     print(f'logged in as: {bot.user.name}')
@@ -155,7 +152,7 @@ async def node_connect():
     await nextwave.NodePool.create_node(bot=bot, host='lavalink.lexnet.cc', port=443, password="lexn3tl@val!nk", https=True, spotify_client=spotify.SpotifyClient(client_id=SPOTIFY_CLIENT_ID,client_secret=SPOTIFY_CLIENT_SECRET))
 
 @bot.event
-async def on_nextwave_track_end(player: nextwave.Player, track: nextwave.Track, reason):
+async def on_nextwave_track_end(player: nextwave.Player):
     ctx = player.ctx
     vc: player = ctx.voice_client
     try:
@@ -172,13 +169,16 @@ async def on_command_error(ctx: commands.Context, error):
     if isinstance(error, commands.CommandOnCooldown):
         em = nextcord.Embed(description=f'**Cooldown active**\ntry again in `{error.retry_after:.2f}`s*')
         await ctx.send(embed=em)
+        return
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(embed=nextcord.Embed(description="Missing `arguments`"))
+        return
 
 async def user_connectivity(ctx: commands.Context):
     if not getattr(ctx.author.voice, 'channel', None):
         await ctx.send(embed=nextcord.Embed(description='Try after joining a `voice channel`',))
         return False
+    return True
 
 
 if __name__ == '__main__':
