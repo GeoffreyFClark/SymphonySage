@@ -1,3 +1,2 @@
 nextcord
 nextwave
-numpy
