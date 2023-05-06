@@ -1,6 +1,7 @@
 # 💯 Discord-Music-Bot 💯
 
-🔥🎵 Discord bot that plays free music for your server! 💪🚀 Commands:</b>
+🔥💪 Discord bot that plays free music for your server! 🎷🚀 </b>
+### Commands:
 - $play [song name]
      - alias $p
 - $splay [spotify playlist url] 
