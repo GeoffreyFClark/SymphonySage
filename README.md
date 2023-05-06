@@ -12,7 +12,7 @@
 - $help
 - $disconnect
 
-## How to run the bot ✅
+## ✅ How to run the bot ✅
 1. Make sure you have `Python` + a Python package installer like `Pip`.
      - Check by running in your terminal `python --version` and `pip --version` (Pre-installed on Macs).
 2. Run `git clone https://github.com/GeoffreyFClark/Discord-Music-Bot.git` in your terminal.
