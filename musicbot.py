@@ -2,14 +2,11 @@ import nextcord
 from nextcord.ext import commands
 import nextwave
 from nextwave.ext import spotify
-import numpy as np
-import datetime, random
-import os
 from typing import Optional
 
-DISCORD_TOKEN = ''
-SPOTIFY_CLIENT_ID = ''
-SPOTIFY_CLIENT_SECRET = ''
+DISCORD_TOKEN = 'YOUR DISCORD TOKEN HERE IN QUOTES'
+SPOTIFY_CLIENT_ID = 'YOUR SPOTIFY CLIENT ID HERE'
+SPOTIFY_CLIENT_SECRET = 'YOUR SPOTIFY CLIENT SECRET HERE'
 
 intents = nextcord.Intents.all()
 bot = commands.Bot(command_prefix='$', intents = intents, description='Premium quality music bot for free! <3')
@@ -179,7 +176,6 @@ async def user_connectivity(ctx: commands.Context):
         await ctx.send(embed=nextcord.Embed(description='Try after joining a `voice channel`',))
         return False
     return True
-
 
 if __name__ == '__main__':
     bot.run(DISCORD_TOKEN)
