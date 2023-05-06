@@ -22,7 +22,7 @@
      - Alternatively run `pip install nextcord nextwave`
 4. Input your discord token, spotify_client_id, and spotify_client_secret in lines 7-9 and save. 
      - You can obtain the spotify client id + secret from the [spotify developer portal.](https://developer.spotify.com/dashboard)
-          - Create App (Put <i>literally anything</i> for name, description, redirect URI).
+          - Create App (Put <i>anything</i> for name, description, redirect URI).
           - App --> Settings --> View Basic Information --> Client ID + View Secret.
      - You can obtain a discord token from [the discord developer portal.](https://discord.com/developers/applications)<br>
           - Create a Discord Application:<br>
