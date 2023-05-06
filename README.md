@@ -25,7 +25,7 @@
           - Create App (Put <i>anything</i> for name, description, redirect URI).
           - App --> Settings --> View Basic Information --> Client ID + View Secret.
      - You can obtain a discord token from [the discord developer portal.](https://discord.com/developers/applications)<br>
-          - Create a Discord App --> Bot sidetab --> configure settings --> click <i>Add Bot</i> --> Copy Discord Token<br>
+          - Create a Discord App --> Bot sidetab --> Configure Settings --> Add Bot --> Copy Discord Token<br>
 5. Add the bot to your server via the discord developer portal.</br>
-    - OAuth2 sidetab --> URL Generator --> Scopes: bot --> Select permissions --> URL to add bot to servers.<br>
+    - OAuth2 sidetab --> URL Generator --> Scopes: bot --> Select Permissions --> URL to add bot to servers.<br>
     - Run Script and enjoy!
