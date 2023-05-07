@@ -1,6 +1,6 @@
-# 💯 Discord-Music-Bot 💯
+# Discord-Music-Bot
 
-🔥💪 Discord bot that plays free music for your server! 🎷🚀 </b>
+🔥💯 Discord bot that plays free music for your server! 🎷🚀 </b>
 ### Commands:
 - $help [command name]
 - $play [song name]
