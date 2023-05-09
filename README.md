@@ -1,4 +1,4 @@
-# 🔥💯 Discord bot that plays music from Youtube/Spotify! 🎷🚀 <br>
+## 🔥💯 Discord bot that plays music from Youtube/Spotify! 🎷🚀 <br>
 
 I am hosting the bot on a Linux VM instance in the cloud. <br>
 [✅ Click here to add the bot to your server for free! ✅](https://discord.com/api/oauth2/authorize?client_id=1103073658865451139&permissions=40667471806016&scope=bot)
