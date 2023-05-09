@@ -1,6 +1,8 @@
 # Discord-Music-Bot
 
-🔥💯 Discord bot that plays free music for your server! 🎷🚀 </b>
+🔥💯 Discord bot that plays music from Youtube/Spotify for your server! 🎷🚀 </b>
+[Click here to add it to your server](https://discord.com/api/oauth2/authorize?client_id=1103073658865451139&permissions=40667471806016&scope=bot)
+
 ### Commands:
 - $help [command name]
 - $play [song name]
