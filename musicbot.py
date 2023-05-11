@@ -10,6 +10,7 @@ SPOTIFY_CLIENT_SECRET = 'YOUR SPOTIFY CLIENT SECRET HERE'
 
 intents = nextcord.Intents.all()
 bot = commands.Bot(command_prefix='$', intents = intents, description='Premium quality music bot for free! <3')
+setattr(nextwave.Player, 'lq', False)
 
 bot.remove_command('help')
 @bot.group(invoke_without_command=True)
@@ -149,7 +150,7 @@ async def node_connect():
     await nextwave.NodePool.create_node(bot=bot, host='lavalink.lexnet.cc', port=443, password="lexn3tl@val!nk", https=True, spotify_client=spotify.SpotifyClient(client_id=SPOTIFY_CLIENT_ID,client_secret=SPOTIFY_CLIENT_SECRET))
 
 @bot.event
-async def on_nextwave_track_end(player: nextwave.Player):
+async def on_nextwave_track_end(player: nextwave.Player, track: nextwave.Track, reason):
     ctx = player.ctx
     vc: player = ctx.voice_client
     try:
@@ -177,5 +178,16 @@ async def user_connectivity(ctx: commands.Context):
         return False
     return True
 
+# Auto-disconnect if all participants leave the voice channel
+@bot.event
+async def on_voice_state_update(member, before, after):
+    if before.channel is not None:
+        if bot.user in before.channel.members:
+            if len(before.channel.members) == 1:
+                for vc in bot.voice_clients:
+                    if vc.channel == before.channel:
+                        await vc.disconnect(force=True)
+                        break
+                        
 if __name__ == '__main__':
     bot.run(DISCORD_TOKEN)
