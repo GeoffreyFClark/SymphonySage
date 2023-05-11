@@ -1,6 +1,8 @@
-# 💯 Discord-Music-Bot 💯
+## 💯 Discord bot that plays music from Youtube/Spotify!🎷<br>
 
-🔥💪 Discord bot that plays free music for your server! 🎷🚀 </b>
+I am currently hosting the bot in a Linux VM instance on Oracle Cloud. <br>
+[✅ Click here to add the bot to your server for free! ✅](https://discord.com/api/oauth2/authorize?client_id=1103073658865451139&permissions=40667471806016&scope=bot)
+
 ### Commands:
 - $help [command name]
 - $play [song name]
@@ -12,7 +14,7 @@
 - $help
 - $disconnect
 
-## How to run the bot ✅
+## 🔥 Alternatively, you can host the bot yourself! 🚀
 1. Make sure you have `Python` + a Python package installer like `Pip`.
      - Check by running in your terminal `python --version` and `pip --version` (Pre-installed on Macs).
 2. Run `git clone https://github.com/GeoffreyFClark/Discord-Music-Bot.git` in your terminal.
@@ -25,7 +27,7 @@
           - Create App (Put <i>anything</i> for name, description, redirect URI).
           - App --> Settings --> View Basic Information --> Client ID + View Secret.
      - You can obtain a discord token from [the discord developer portal.](https://discord.com/developers/applications)<br>
-          - Create a Discord App --> Bot sidetab --> configure settings --> click <i>Add Bot</i> --> Copy Discord Token<br>
+          - Create a Discord App --> Bot sidetab --> Configure Settings --> Add Bot --> Copy Discord Token<br>
 5. Add the bot to your server via the discord developer portal.</br>
-    - OAuth2 sidetab --> URL Generator --> Scopes: bot --> Select permissions --> URL to add bot to servers.<br>
+    - OAuth2 sidetab --> URL Generator --> Scopes: bot --> Select Permissions --> URL to add bot to servers.<br>
     - Run Script and enjoy!
