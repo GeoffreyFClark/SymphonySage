@@ -54,8 +54,10 @@ async def spotifyplay_command(ctx: commands.Context, search: str):
         return await ctx.send(embed=nextcord.Embed(description='Try after joining voice channel'))
     elif not ctx.voice_client:
         vc: nextwave.Player = await ctx.author.voice.channel.connect(cls=nextwave.Player)
+        await ctx.send(embed=nextcord.Embed(description='Spotify Playlist added to `QUEUE`'))
     else:
         vc: nextwave.Player = ctx.voice_client
+        await ctx.send(embed=nextcord.Embed(description='Spotify Playlist added to `QUEUE`'))
 
     async for partial in spotify.SpotifyTrack.iterator(query=search, type=spotify.SpotifySearchType.playlist, partial_tracks=True):
         if vc.queue.is_empty and vc.is_playing() is False:
