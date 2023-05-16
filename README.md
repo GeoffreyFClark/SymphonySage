@@ -1,7 +1,7 @@
 # 💯 Discord bot that plays music from Youtube/Spotify!
-### 🎷Main Commands:
+### 🎷Commands:
 - $play [song name]
-- $splay [spotify playlist url] 
+- $splay [spotify playlist link] 
 - $pause 
 - $resume 
 - $next/$skip 
