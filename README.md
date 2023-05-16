@@ -1,7 +1,4 @@
-# [✅ Click here to add the bot to your server ✅](https://discord.com/api/oauth2/authorize?client_id=1103073658865451139&permissions=40667471806016&scope=bot) <br>
-Hosted 24/7 in a Linux virtual machine instance on Oracle Cloud!
-
-## 💯 Discord bot that plays music from Youtube/Spotify!🎷<br>
+# 💯 Discord bot that plays music from Youtube/Spotify!🎷<br>
 ### Commands:
 - $help [command name]
 - $play [song name]
@@ -11,9 +8,12 @@ Hosted 24/7 in a Linux virtual machine instance on Oracle Cloud!
 - $pause 
 - $clear 
 - $help
-- $disconnect
+- $disconnect<br>
 
-## 🔥 Alternatively, you can host the bot yourself! 🚀
+# [✅ Click here to add the bot to your server ✅](https://discord.com/api/oauth2/authorize?client_id=1103073658865451139&permissions=40667471806016&scope=bot) <br>
+### Hosted 24/7 in a Linux virtual machine instance on Oracle Cloud!<br>
+
+## 🔥 Alternatively, here's how you can host it yourself! 🚀
 1. Make sure you have `Python` + a Python package installer like `Pip`.
      - Check by running in your terminal `python --version` and `pip --version` (Pre-installed on Macs).
 2. Run `git clone https://github.com/GeoffreyFClark/Discord-Music-Bot.git` in your terminal.
