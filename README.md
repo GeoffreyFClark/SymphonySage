@@ -10,7 +10,7 @@
 - $help [optional parameter: command name]
 
 # [✅ Click here to add the bot to your server!](https://discord.com/api/oauth2/authorize?client_id=1103073658865451139&permissions=40667471806016&scope=bot)
-### Hosted 24/7 in a Linux virtual machine instance on Oracle Cloud.<br><br><br><br>
+### Hosted 24/7 via a Linux virtual machine instance on Oracle Cloud.<br><br><br><br>
 
 ## 🔥 Alternatively, here's how you can host it yourself!
 1. Make sure you have `Python` + a Python package installer like `Pip`.
