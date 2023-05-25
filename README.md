@@ -6,7 +6,7 @@
 - $resume 
 - $next/$skip 
 - $clear 
-- $disconnect
+- $reset
 - $help [optional parameter: command name]
 
 # [✅ Click here to add the bot to your server!](https://discord.com/api/oauth2/authorize?client_id=1103073658865451139&permissions=40667471806016&scope=bot)
