@@ -3,6 +3,8 @@ from nextcord.ext import commands
 import nextwave
 from nextwave.ext import spotify
 from typing import Optional
+import asyncio
+import os
 
 DISCORD_TOKEN = 'YOUR DISCORD TOKEN HERE IN QUOTES'
 SPOTIFY_CLIENT_ID = 'YOUR SPOTIFY CLIENT ID HERE'
@@ -15,7 +17,7 @@ setattr(nextwave.Player, 'lq', False)
 bot.remove_command('help')
 @bot.group(invoke_without_command=True)
 async def help(ctx, helpstr: Optional[str] = None):
-    user_commands = [play_command, spotifyplay_command, pause_command, resume_command, skip_command, clear_command, disconnect_command]
+    user_commands = [play_command, spotifyplay_command, pause_command, resume_command, skip_command, clear_command, reset_command]
     if helpstr is not None:
         for i in user_commands:
             if i.name == helpstr:
@@ -125,23 +127,54 @@ async def clear_command(ctx: commands.Context):
     clear_command_embed = nextcord.Embed(description='`QUEUE` cleared!')
     return await ctx.send(embed=clear_command_embed)
 
-@commands.cooldown(1, 2, commands.BucketType.user)
-@bot.command(name='disconnect', aliases=['dc', 'leave'], help='disconnects the player from the vc', description='$dc')
-async def disconnect_command(ctx: commands.Context):
+@commands.cooldown(1, 60, commands.BucketType.user)
+@bot.command(name='reset', help='Soft resets the bot. Use this command to resolve any issues.', description='$reset')
+async def reset_command(ctx):
+    try:
+        await ctx.send(embed=nextcord.Embed(description='Resetting Bot!'))
+        await node_connect()
+    except Exception:
+        await ctx.send(embed=nextcord.Embed(description='Failed to reset!'))
+
+@commands.cooldown(1, 60*60, commands.BucketType.user)
+@bot.command(name='adminhardreset', hidden=True)
+async def adminreset_command(ctx):
     if await user_connectivity(ctx) == False:
         return
     vc : nextwave.Player = ctx.voice_client
     try:
         await vc.disconnect(force=True)
-        await ctx.send(embed=nextcord.Embed(description='**BYE!** Have a great time!'))
+        await ctx.send(embed=nextcord.Embed(description='Hard Resetting Bot!'))
+        bot.clear()
+        bot.close()
+        os.execl("X:\\CODING Projects\\Discord Bots\\Discord Music Bot\\myenv\\Scripts\\python.exe", "python.exe", "musicbot2.py")
     except Exception:
-        await ctx.send(embed=nextcord.Embed(description='Failed to destroy!'))
-
+        await ctx.send(embed=nextcord.Embed(description='Failed to reset!'))
+        
+# @commands.cooldown(1, 60*60, commands.BucketType.user)
+# @bot.command(name='hardreset', hidden=True)
+# async def hardreset_command(ctx):
+#     vc : nextwave.Player = ctx.voice_client
+#     try:
+#         await vc.disconnect(force=True)
+#     except:
+#         print("Bot not in VC")
+#     await ctx.send(embed=nextcord.Embed(description='Hard Resetting Bot!'))
+#     try:
+#         await bot.clear()
+#         await bot.close()
+#     except:
+#         print("Bot not running")
+#     try:
+#         os.execl("X:\\CODING Projects\\Discord Bots\\Discord Music Bot\\myenv\\Scripts\\python.exe", "python.exe", "musicbot2.py")
+#     except Exception:
+#         await ctx.send(embed=nextcord.Embed(description='Failed to reset!'))
+        
 @bot.event
 async def on_ready():
     print(f'logged in as: {bot.user.name}')
     bot.loop.create_task(node_connect())
-    await bot.change_presence(activity=nextcord.Activity(type=nextcord.ActivityType.listening, name="$help"))
+    await bot.change_presence(activity=nextcord.Activity(type=nextcord.ActivityType.streaming , name="Music | $help"))
 
 @bot.event
 async def on_nextwave_node_ready(node: nextwave.Node):
@@ -190,6 +223,11 @@ async def on_voice_state_update(member, before, after):
                     if vc.channel == before.channel:
                         await vc.disconnect(force=True)
                         break
+
+async def node_reset_timer():
+    await asyncio.sleep(24 * 60 * 60)  # Backup function to reconnect to next node every 24 hours
+    node_connect()                        
                         
 if __name__ == '__main__':
+    bot.loop.create_task(node_reset_timer())
     bot.run(DISCORD_TOKEN)
