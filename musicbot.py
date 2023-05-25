@@ -135,21 +135,6 @@ async def reset_command(ctx):
         await node_connect()
     except Exception:
         await ctx.send(embed=nextcord.Embed(description='Failed to reset!'))
-
-@commands.cooldown(1, 60*60, commands.BucketType.user)
-@bot.command(name='adminhardreset', hidden=True)
-async def adminreset_command(ctx):
-    if await user_connectivity(ctx) == False:
-        return
-    vc : nextwave.Player = ctx.voice_client
-    try:
-        await vc.disconnect(force=True)
-        await ctx.send(embed=nextcord.Embed(description='Hard Resetting Bot!'))
-        bot.clear()
-        bot.close()
-        os.execl("X:\\CODING Projects\\Discord Bots\\Discord Music Bot\\myenv\\Scripts\\python.exe", "python.exe", "musicbot2.py")
-    except Exception:
-        await ctx.send(embed=nextcord.Embed(description='Failed to reset!'))
         
 # @commands.cooldown(1, 60*60, commands.BucketType.user)
 # @bot.command(name='hardreset', hidden=True)
