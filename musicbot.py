@@ -12,8 +12,8 @@ SPOTIFY_CLIENT_SECRET = 'YOUR SPOTIFY CLIENT SECRET HERE'
 
 # List of dictionaries containing publicly hosted lavalink nodes
 lavalink = [
-    {'host': '1lavalink.lexnet.cc', 'port': 443, 'password': 'lexn3tl@val!nk'},
-    {'host': '1eu-lavalink.lexnet.cc', 'port': 443, 'password': 'lexn3tl@val!nk'},
+    {'host': 'lavalink.lexnet.cc', 'port': 443, 'password': 'lexn3tl@val!nk'},
+    {'host': 'eu-lavalink.lexnet.cc', 'port': 443, 'password': 'lexn3tl@val!nk'},
     {'host': 'suki.nathan.to', 'port': 443, 'password': 'adowbongmanacc'},
     {'host': 'oce-lavalink.lexnet.cc', 'port': 443, 'password': 'lexn3tl@val!nk'},
 ]
