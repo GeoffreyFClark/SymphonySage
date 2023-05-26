@@ -10,6 +10,14 @@ DISCORD_TOKEN = 'YOUR DISCORD TOKEN HERE IN QUOTES'
 SPOTIFY_CLIENT_ID = 'YOUR SPOTIFY CLIENT ID HERE'
 SPOTIFY_CLIENT_SECRET = 'YOUR SPOTIFY CLIENT SECRET HERE'
 
+# List of dictionaries containing publicly hosted lavalink nodes
+lavalink = [
+    {'host': '1lavalink.lexnet.cc', 'port': 443, 'password': 'lexn3tl@val!nk'},
+    {'host': '1eu-lavalink.lexnet.cc', 'port': 443, 'password': 'lexn3tl@val!nk'},
+    {'host': 'suki.nathan.to', 'port': 443, 'password': 'adowbongmanacc'},
+    {'host': 'oce-lavalink.lexnet.cc', 'port': 443, 'password': 'lexn3tl@val!nk'},
+]
+
 intents = nextcord.Intents.all()
 bot = commands.Bot(command_prefix='$', intents = intents, description='Premium quality music bot for free! <3')
 setattr(nextwave.Player, 'lq', False)
@@ -167,8 +175,16 @@ async def on_nextwave_node_ready(node: nextwave.Node):
 
 async def node_connect():
     await bot.wait_until_ready()
-    await nextwave.NodePool.create_node(bot=bot, host='lavalink.lexnet.cc', port=443, password="lexn3tl@val!nk", https=True, spotify_client=spotify.SpotifyClient(client_id=SPOTIFY_CLIENT_ID,client_secret=SPOTIFY_CLIENT_SECRET))
-
+    randomll = random.choice(lavalink)
+    await nextwave.NodePool.create_node(
+        bot=bot, 
+        host=randomll['host'], 
+        port=randomll['port'], 
+        password=randomll['password'], 
+        https=True, 
+        spotify_client=spotify.SpotifyClient(client_id=SPOTIFY_CLIENT_ID,client_secret=SPOTIFY_CLIENT_SECRET)
+        )    
+    
 @bot.event
 async def on_nextwave_track_end(player: nextwave.Player, track: nextwave.Track, reason):
     ctx = player.ctx
