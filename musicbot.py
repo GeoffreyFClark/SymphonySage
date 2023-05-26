@@ -135,7 +135,7 @@ async def clear_command(ctx: commands.Context):
     clear_command_embed = nextcord.Embed(description='`QUEUE` cleared!')
     return await ctx.send(embed=clear_command_embed)
 
-@commands.cooldown(1, 60, commands.BucketType.user)
+@commands.cooldown(1, 5, commands.BucketType.user)
 @bot.command(name='reset', help='Soft resets the bot. Use this command to resolve any issues.', description='$reset')
 async def reset_command(ctx):
     try:
@@ -184,6 +184,8 @@ async def node_connect():
         https=True, 
         spotify_client=spotify.SpotifyClient(client_id=SPOTIFY_CLIENT_ID,client_secret=SPOTIFY_CLIENT_SECRET)
         )    
+    await asyncio.sleep(24 * 60 * 60)  # Connect to new node every 24 hours
+    await node_connect()      
     
 @bot.event
 async def on_nextwave_track_end(player: nextwave.Player, track: nextwave.Track, reason):
@@ -223,12 +225,7 @@ async def on_voice_state_update(member, before, after):
                 for vc in bot.voice_clients:
                     if vc.channel == before.channel:
                         await vc.disconnect(force=True)
-                        break
-
-async def node_reset_timer():
-    await asyncio.sleep(24 * 60 * 60)  # Backup function to reconnect to next node every 24 hours
-    node_connect()                        
+                        break                  
                         
 if __name__ == '__main__':
-    bot.loop.create_task(node_reset_timer())
     bot.run(DISCORD_TOKEN)
