@@ -10,7 +10,7 @@ DISCORD_TOKEN = 'YOUR DISCORD TOKEN HERE IN QUOTES'
 SPOTIFY_CLIENT_ID = 'YOUR SPOTIFY CLIENT ID HERE'
 SPOTIFY_CLIENT_SECRET = 'YOUR SPOTIFY CLIENT SECRET HERE'
 
-# List of dictionaries containing publicly hosted lavalink nodes
+# List of dictionaries containing publicly hosted lavalink servers
 lavalink = [
     {'host': 'lavalink.lexnet.cc', 'port': 443, 'password': 'lexn3tl@val!nk'},
     {'host': 'eu-lavalink.lexnet.cc', 'port': 443, 'password': 'lexn3tl@val!nk'},
