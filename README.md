@@ -1,4 +1,4 @@
-# SymphonySage: Discord bot that plays music from Youtube/Spotify
+# Discord bot that plays music from Youtube/Spotify
 ## :warning: Project discontinued in accordance with Terms of Service. :warning:
 
 Commands:
