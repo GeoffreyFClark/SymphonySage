@@ -1,5 +1,7 @@
-# 💯 Discord bot that plays music from Youtube/Spotify!
-### 🎷Commands:
+# SymphonySage: Discord bot that plays music from Youtube/Spotify
+## :warning: Project discontinued in accordance with Terms of Service. :warning:
+
+Commands:
 - $play [song name]
 - $splay [spotify playlist link] 
 - $pause 
@@ -9,10 +11,8 @@
 - $reset
 - $help [optional parameter: command name]
 
-# [✅ Click here to add the bot to your server!](https://discord.com/api/oauth2/authorize?client_id=1103073658865451139&permissions=40667471806016&scope=bot)
-### Hosted 24/7 via a Linux virtual machine instance on Oracle Cloud.<br><br><br><br>
-
-## 🔥 Alternatively, here's how you can host it yourself!
+### ~~Hosted via a Linux virtual machine instance on Oracle Cloud:~~ [~~Click here to add the bot to your server!~~](https://discord.com/api/oauth2/authorize?client_id=1103073658865451139&permissions=40667471806016&scope=bot)<br>
+### ~~Alternatively, here's how you can host it yourself:~~
 1. Make sure you have `Python` + a Python package installer like `Pip`.
      - Check by running in your terminal `python --version` and `pip --version` (Pre-installed on Macs).
 2. Run `git clone https://github.com/GeoffreyFClark/Discord-Music-Bot.git` in your terminal.
