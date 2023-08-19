@@ -1,5 +1,5 @@
 # Discord bot that plays music from Youtube/Spotify
-## :warning: Project discontinued in accordance with Terms of Service. :warning:
+### :warning: Project discontinued to comply with Terms of Service. :warning:
 
 Commands:
 - $play [song name]
